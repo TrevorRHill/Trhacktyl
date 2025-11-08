@@ -1,50 +1,85 @@
-# Documentation: https://haobogu.github.io/rmk/keyboard_configuration.html
-[keyboard]
-name = "RMK Keyboard"
-product_name = "RMK Keyboard"
-vendor_id = 0x4c4b
-product_id = 0x4643
-manufacturer = "haobo"
+[keyboard]                                                                                                                                                                                           [keyboard]
+name = "Trhacktyl"
+product_name = "Trhacktyl"
+vendor_id = 0x9034
+product_id = 0x3141
+manufacturer = "TRHKeyboards"
 chip = "rp2040"
 
-[matrix]
-# Input and output pins are mandatory
-input_pins = ["PIN_6", "PIN_7", "PIN_8", "PIN_9"]
-output_pins = ["PIN_19", "PIN_20", "PIN_21"]
-# WARNING: Currently row2col/col2row is set in RMK's feature gate, configs here do nothing actually
-# row2col = true
 
 [layout]
 rows = 4
-cols = 3
-layers = 2
+cols = 10
+layers = 4
 keymap = [
-    [
-        ["A", "B", "C"],
-        ["Kc1", "Kc2", "Kc3"],
-        ["LCtrl", "MO(1)", "LShift"],
-        ["OSL(1)", "LT(2, Kc9)", "LM(1, LShift | LGui)"]
+    [    
+        ["Q",              "W",                "E",                     "R",                      "T",                   "Y",              "U",                "I",             "O",               "P"],
+        ["A",              "S",                "D",                     "F",                      "G",                   "H",              "J",                "K",             "L",               "Semicolon"],
+        ["Z",              "X",                "C",                     "V",                      "B",                   "Quote",          "N",                "M",             "Comma",           "Dot"],
+        ["No",             "No",               "LShift",                "MO(2)",                  "Space",               "Backspace",      "MO(1)",            "RCtrl",         "No",              "No"]
     ],
     [
-        ["_", "TT(1)", "TG(2)"],
-        ["_", "_", "_"],
-        ["_", "_", "_"],
-        ["_", "_", "_"]
+        ["Escape",         "SHIFTED(Grave)",   "SHIFTED(LeftBracket)",  "SHIFTED(RightBracket)",  "Grave",               "Semicolon",      "LeftBracket",      "RightBracket",  "SHIFTED(Kc9)",    "SHIFTED(Kc0)"],
+        ["SHIFTED(Kc1)",   "SHIFTED(Kc2)",     "SHIFTED(Kc3)",          "SHIFTED(Kc4)",           "SHIFTED(Kc5)",        "Minus",          "SHIFTED(Minus)",   "F11",           "F12",             "_"],
+        ["SHIFTED(Kc6)",   "SHIFTED(Kc7)",     "Backslash",             "Slash",                  "SHIFTED(Backslash)",  "Equal",          "SHIFTED(Equal)",   "SHIFTED(Kc8)",  "SHIFTED(Slash)",  "SHIFTED(Kc1)"],
+        ["No",             "No",               "LShift",                "MO(3)",                  "Space",               "Backspace",      "_",                "RCtrl",         "No",              "No"]
     ],
+    [
+        ["Escape",         "KbMute",           "_",                     "_",                      "_",                   "PageUp",         "Home",              "Up",            "End",             "Delete"],
+        ["LAlt",           "_",                "_",                     "_",                      "_",                   "Tab",            "Left",              "Down",          "Right",           "Enter"],
+        ["KbVolumeDown",   "KbVolumeUp",       "_",                     "_",                      "_",                   "PageDown",       "_",                 "_",             "_",               "RGui"],
+        ["No",             "No",               "LShift",                "_",                      "Space",               "Backspace",      "MO(3)",             "RCtrl",         "No",              "No"]
+    ],
+    [
+        ["SHIFTED(Kc1)",   "SHIFTED(Kc2)",     "SHIFTED(Kc3)",          "SHIFTED(Kc4)",           "SHIFTED(Kc5)",        "SHIFTED(Kc6)",   "SHIFTED(Kc7)",    "SHIFTED(Kc8)",  "SHIFTED(Kc9)",    "SHIFTED(Kc0)"],
+        ["Kc1",            "Kc2",              "Kc3",                   "Kc4",                    "Kc5",                 "Kc6",            "Kc7",             "Kc8",           "Kc9",             "Kc0"],
+        ["F1",             "F2",               "F3",                    "F4",                     "F5",                  "F6",             "F7",              "F8",            "F9",              "F10"],
+        ["No",             "No",               "LShift",                "_",                      "Space",               "Backspace",      "_",               "RCtrl",         "No",              "No"]
+   ]
 ]
 
-[light]
-# All light pins are high-active by default, uncomment if you want it to be low-active
-# capslock.pin = "PB2"
-# capslock.low_active = true
-# scrolllock.pin = "PA3"
-# scrolllock.low_active = true
-# Just ignore if no light pin is used for it
-# numslock.pin = "PA5"
-# numslock.low_active = true
+[split]
+connection = "serial"
 
+[split.central]
+rows = 4
+cols = 5
+row_offset = 0
+col_offset = 0
+serial = [
+    { instance = "UART0", tx_pin = "PIN_0", rx_pin = "PIN_1" },
+]
 
+[split.central.matrix]
+input_pins = ["PIN_6", "PIN_7", "PIN_8", "PIN_9"]
+output_pins = ["PIN_15", "PIN_14", "PIN_13", "PIN_12", "PIN_11"]
+
+[[split.peripheral]]
+rows = 4
+cols = 5
+row_offset = 0
+col_offset = 5
+serial = [
+    { instance = "UART0", tx_pin = "PIN_0", rx_pin = "PIN_1" },
+]
+
+[split.peripheral.matrix]
+input_pins = ["PIN_6", "PIN_7", "PIN_8", "PIN_9"]
+output_pins = ["PIN_15", "PIN_14", "PIN_13", "PIN_12", "PIN_11"]
 
 [storage]
-# Storage feature is enabled by default
-# enabled = false
+enabled = true
+num_sectors = 32
+
+[behavior.combo]
+timeout = "150ms"
+combos = [
+ { actions = ["K", "L"],         output = "Enter" },
+ { actions = ["L", "Semicolon"], output = "Delete"},
+ { actions = ["N", "M"],         output = "LCtrl"},
+ { actions = ["D", "F"],         output = "LShift"},
+ { actions = ["J", "K"],         output = "RShift"},
+ { actions = ["Q", "W"],         output = "Escape"},
+ { actions = ["Y", "U"],         output = "LAlt"},
+ { actions = ["W", "E"],         output = "LGUI"},
+]
